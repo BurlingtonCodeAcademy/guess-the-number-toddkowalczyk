@@ -7,12 +7,41 @@ function ask(questionText) {
   });
 }
 
-start();
+function makeGuess(lowRange, highRange) {
+  guess = Math.floor(Math.random() * (highRange - lowRange) + lowRange);
+  return guess;
+}
 
 async function start() {
+  let lowPoint = 1;
+  let highPoint = 100;
+  let activeGame = true;
+  let currentGuess = null;
+
   console.log("Let's play a game where you (human) make up a number and I (computer) try to guess it.")
   let secretNumber = await ask("What is your secret number?\nI won't peek, I promise...\n");
   console.log('You entered: ' + secretNumber);
-  // Now try and complete the program.
-  process.exit();
+
+  while (activeGame)
+  {
+    currentGuess = makeGuess(lowPoint, highPoint);
+    answer = await ask("Is it " + currentGuess + " ?");
+    
+    if (answer.toLowerCase() === 'y') {
+      console.log('Yes, it is!  Congrats!');
+      process.exit();
+    }
+    else {
+       direction = await ask("Is it Higher\(h\) or Lower \(l\)");   
+    }
+
+    if (direction.toLowerCase() === 'h') {
+       lowPoint = currentGuess + 1;
+    }
+    else if (direction.toLowerCase() === 'l') {
+       highPoint = currentGuess - 1;
+    }
+  }
 }
+
+start();
