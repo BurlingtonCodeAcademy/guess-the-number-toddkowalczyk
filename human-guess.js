@@ -42,7 +42,7 @@ async function start() {
   }
 
  let secretNumber = makeGuess(lowPoint, highPoint);
- console.log('The secret number is: ' + secretNumber + '\n');
+ // console.log('The secret number is: ' + secretNumber + '\n');
 
   while (activeGame) {
     
@@ -57,10 +57,10 @@ async function start() {
       }
       else {
         console.log('Sorry that\'s not it.  Try again');
-        console.log('The number is ' + giveHint(guess, secretNumber));
+        console.log('Here is a hint, my secret number is ' + giveHint(guess, secretNumber));
       }
     }
   }
 }
 
-start();
+start()
