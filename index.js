@@ -13,7 +13,6 @@ function makeGuess(lowRange, highRange) {
 }
 
 function humanIsCheating(direction, guess, secret) {
-
   if (direction.toLowerCase() === 'l'
     && (guess <= secret)) {
     return true;
