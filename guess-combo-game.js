@@ -104,7 +104,7 @@ async function humanAndComputerGuess() {
 
   // Generate secret number
   let secretNumber = makeGuess(lowPoint, highPoint);
-  console.log('The secret number is: ' + secretNumber + '\n');
+  //console.log('The secret number is: ' + secretNumber + '\n');
 
   while (true) {
 
@@ -183,11 +183,12 @@ async function computerGuesses() {
     //  Ask human if number is higher or lower 
     while (true) {
       hint = await ask("Is it Higher\(h\) or Lower \(l\)? ");
-      if (hint.toLowerCase() === 'l' || hint.toLowerCase === 'h') {
+  
+      if (hint.toLowerCase() === 'l' || hint.toLowerCase() === 'h') {
         break;
       }
       else {
-        console.log('You must enter a l or h');
+        console.log('You must enter an l or h');
       }
     }
 
