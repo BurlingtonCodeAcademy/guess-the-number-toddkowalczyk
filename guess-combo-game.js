@@ -58,27 +58,27 @@ async function startGame() {
 
   while (true) {
     gameSelection = await ask("Enter a 1 or 2 to pick the game to play: ");
-    
+
     switch (gameSelection) {
-    case '1' :
-      console.log('\n\n');
-      console.log('*************************************************');
-      console.log('** Computer guesses a number that you pick!    **');
-      console.log('*************************************************\n');
-      computerGuesses();
-      break;
-  
-    case '2' :
-      console.log('\n\n');
-      console.log('*************************************************');
-      console.log('**  Human & Computer try to guess the number!! **');
-      console.log('*************************************************\n');
-      humanAndComputerGuess();
-      break;
-    
-    default :
-      console.log("You must enter a 1 or a 2 to select a game.");
-      continue;
+      case '1':
+        console.log('\n\n');
+        console.log('*************************************************');
+        console.log('** Computer guesses a number that you pick!    **');
+        console.log('*************************************************\n');
+        computerGuesses();
+        break;
+
+      case '2':
+        console.log('\n\n');
+        console.log('*************************************************');
+        console.log('**  Human & Computer try to guess the number!! **');
+        console.log('*************************************************\n');
+        humanAndComputerGuess();
+        break;
+
+      default:
+        console.log("You must enter a 1 or a 2 to select a game.");
+        continue;
     }
   }
 }
@@ -118,7 +118,7 @@ async function humanAndComputerGuess() {
         console.log('Yes, it is ' + secretNumber + '! Human Wins!');
         process.exit();
       }
-      else { 
+      else {
         console.log('sorry human, wrong answer!\n');
       }
 
@@ -127,17 +127,17 @@ async function humanAndComputerGuess() {
       console.log('Computer\'s guess is: ' + guess);
 
       if (guess === secretNumber) {
-          console.log('Yes, it is ' + secretNumber + '! Computer Wins!');
-          process.exit();
+        console.log('Yes, it is ' + secretNumber + '! Computer Wins!');
+        process.exit();
       }
       else {
         console.log('sorry computer, wrong answer!\n')
       }
-      
+
       // Provide Hint
       hint = giveHint(guess, secretNumber);
       if (hint === 'higher') {
-          computerLowPoint = guess + 1;
+        computerLowPoint = guess + 1;
       }
       else if (hint === 'lower') {
         computerHighPoint = guess - 1;
@@ -153,20 +153,32 @@ async function computerGuesses() {
   let lowPoint = 1;
   let highPoint = null;
   let currentGuess = null;
+  let secretNumber = null;
 
   // Ask for High Point in Range & Validate high point > 1
   while (true) {
     highPoint = await ask("What number would you like for the high point of the guess range? ");
+   
     if (highPoint > 1) {
       break;
     }
-    else {
+    else {  
       console.log("The number for the high end of the range must be greater than 1");
     }
   }
 
   // Ask for secret number
-  let secretNumber = await ask("What is your secret number?\nI won't peek, I promise...\n");
+  while (true) {
+    secretNumber = await ask("What is your secret number?\nI won't peek, I promise...\n");
+
+    if ((parseInt(secretNumber) < 1) || (parseInt(secretNumber) > highPoint)) {
+      console.log('\nThe secret number must be within the guess range.');
+      console.log('Please enter a secret number between 1 - ' + highPoint +'\n');
+    }
+    else {
+      break;
+    }
+  }
 
   // Loop until someone wins or cheating is detected
   while (true) {
@@ -174,7 +186,7 @@ async function computerGuesses() {
     // Make guess and ask human if the guess is correct
     currentGuess = makeOptimizedGuess(lowPoint, highPoint);
     answer = await ask("\nIs it " + currentGuess + " ? ");
-    
+
     if (answer.toLowerCase() === 'y') {
       console.log('Yes, it is!  Congrats Computer you got it!');
       process.exit();
@@ -183,7 +195,7 @@ async function computerGuesses() {
     //  Ask human if number is higher or lower 
     while (true) {
       hint = await ask("Is it Higher\(h\) or Lower \(l\)? ");
-  
+
       if (hint.toLowerCase() === 'l' || hint.toLowerCase() === 'h') {
         break;
       }
@@ -200,15 +212,15 @@ async function computerGuesses() {
 
     // Adjust low point or high point based on hint to help computer's next guess
     switch (hint.toLowerCase()) {
-      case 'h' :
+      case 'h':
         lowPoint = currentGuess + 1;
         break;
 
-      case 'l' :
+      case 'l':
         highPoint = currentGuess - 1;
         break;
 
-      default :
+      default:
         break;
     }
   }
